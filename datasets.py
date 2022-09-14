@@ -53,12 +53,15 @@ def build_dataset(is_train, args):
 
 def build_transform(is_train, args):
     resize_im = args.input_size > 32
+    # 注意这里input_size指的是输入到模型的img size
+    # 和你的数据集的图片大小没有关系
     imagenet_default_mean_and_std = args.imagenet_default_mean_and_std
     mean = IMAGENET_INCEPTION_MEAN if not imagenet_default_mean_and_std else IMAGENET_DEFAULT_MEAN
     std = IMAGENET_INCEPTION_STD if not imagenet_default_mean_and_std else IMAGENET_DEFAULT_STD
 
     if is_train:
         # this should always dispatch to transforms_imagenet_train
+        # Data Augmentation
         transform = create_transform(
             input_size=args.input_size,
             is_training=True,
@@ -72,11 +75,15 @@ def build_transform(is_train, args):
             std=std,
         )
         if not resize_im:
+            # 如果不需要resize ， 那么就是表示inputsize == 32
+            # 这时首先将img进行填充，然后从填充过的img中随机扣一个inputsize大小的块儿下来
             transform.transforms[0] = transforms.RandomCrop(
                 args.input_size, padding=4)
         return transform
 
+    # for evaluation or inference
     t = []
+    # 对于验证集和测试集，如果当前设置的input_size 不等于 32（小于等于32 ，大于32小于384，大于384）
     if resize_im:
         # warping (no cropping) when evaluated at 384 or larger
         if args.input_size >= 384:  

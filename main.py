@@ -124,6 +124,7 @@ def get_args_parser():
                         help='Label smoothing (default: 0.1)')
     parser.add_argument('--train_interpolation', type=str, default='bicubic',
                         help='Training interpolation (random, bilinear, bicubic default: "bicubic")')
+    # See https://nanonets.com/blog/data-augmentation-how-to-use-deep-learning-when-you-have-limited-data-part-2/
 
     # Evaluation parameters
     parser.add_argument('--crop_pct', type=float, default=None)
@@ -232,6 +233,7 @@ def main(args):
     cudnn.benchmark = True
 
     dataset_train, args.nb_classes = build_dataset(is_train=True, args=args)
+
     if args.disable_eval:
         args.dist_eval = False
         dataset_val = None
