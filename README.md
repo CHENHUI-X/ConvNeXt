@@ -1,5 +1,5 @@
-- I add some comments just for learning code . 
-- Plus , i also fine tune some code for me .
+
+- I add some comments and fine tune some code for learning code .
 - ``` bash 
   python3 main.py --batch_size 1 --data_path dataset --data_set CIFAR10 
 
