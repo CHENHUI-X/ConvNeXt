@@ -1,8 +1,42 @@
-I  add some comments just for learning code . - CHENHUI
+- I add some comments just for learning code . 
+- Plus , i also fine tune some code for me .
+- ``` bash 
+  python3 main.py --batch_size 1 --data_path dataset --data_set CIFAR10 
 
+- Note ：If you did not install `torch` or `timm` according to the version required by **install.md**,
+you maybe have an error about `from torch._six import container_abcs` which in `timm.models.layers.helper.py` , you could try changing following code :
+
+```python
+    from torch._six import container_abcs
+    # From PyTorch internals
+    def _ntuple(n):
+      def parse(x):
+          if isinstance(x, container_abcs.Iterable):
+              return x
+          return tuple(repeat(x, n))
+      return parse
+  
+```
+
+to
+
+```python
+    import collections.abc
+    # From PyTorch internals
+    def _ntuple(n):
+        def parse(x):
+            if isinstance(x, collections.abc.Iterable):
+                return x
+            return tuple(repeat(x, n))
+        return parse
+
+```
+---
+
+---
 
 The following is the original text .
----
+
 # [A ConvNet for the 2020s](https://arxiv.org/abs/2201.03545)
 
 Official PyTorch implementation of **ConvNeXt**, from the following paper:
